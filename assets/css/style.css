@@ -1,0 +1,10 @@
+#tv-form {
+    text-align: right;
+}
+
+button,
+    div,
+    form,
+    input {
+      margin: 10px;
+    }

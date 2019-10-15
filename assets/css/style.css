@@ -25,3 +25,7 @@ button {
 #find-tvshow {
     font-size: 24px;
 }
+
+.tvshow {
+    display: inline-block;
+}

@@ -18,9 +18,11 @@ for (var i = 0; i < topic.length; i++) {
     $("#find-tvshow").on("click", function(event) {
       event.preventDefault();
 
-      var tvshow = $("#show-input").val().trim();
-      
+      var tvshow = $("#show-input").val().trim();      
       topic.push(tvshow);
+      var button = $("<button>").text(tvshow);
+      button.attr("data-name", tvshow);
+      button.addClass("tvshow-button");
 
       tvshowButtons();
 
@@ -29,6 +31,8 @@ for (var i = 0; i < topic.length; i++) {
     
 
   tvshowButtons();
+
+  $(document).on("click", ".tvshow", displayShowGif);
 
   
 
@@ -49,12 +53,14 @@ for (var i = 0; i < topic.length; i++) {
       var gifs = response.data;
 
       for (var i = 0; i < gifs.length; i++) {
-        var tvshowDiv = $("<div class='tvshow'>");
+        var tvshowDiv = $("<div>");
         var rating = gifs[i].rating;
         var displayRating = $("<p>").html("Rating: " + rating);
-        var showGIF = $('<img>');
-          showGIF.attr('src', gifs[i].images.fixed_height_still.url)
-
+        var showGIF = $("<img class='gif'>");
+          showGIF.attr('src', gifs[i].images.fixed_height_still.url);
+          showGIF.attr("data-state", "still");
+          showGIF.attr("data-still", gifs[i].images.fixed_height_still.url);
+          showGIF.attr("data-animate", gifs[i].images.fixed_height.url);
 
         tvshowDiv.append(displayRating).append(showGIF);
 
@@ -66,7 +72,18 @@ for (var i = 0; i < topic.length; i++) {
 }
 
 
-$(document).on("click", ".tvshow", displayShowGif);
 
 
-// $("#tvshow-view").empty();
+$(document).on("click", ".gif", function() {
+  
+  var state = $(this).attr("data-state");
+    if (state === "still") {
+    $(this).attr("src", $(this).attr("data-animate"));
+    $(this).attr("data-state", "animate");
+  } else {
+    $(this).attr("src", $(this).attr("data-still"));
+    $(this).attr("data-state", "still");
+  }
+});
+
+
